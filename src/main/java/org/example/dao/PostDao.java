@@ -16,7 +16,7 @@ public class PostDao {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Post> postMapper = (rs, rowNum) -> {
         Post post =
-                new Post(rs.getString("BOARD"), rs.getString("TITLE"), rs.getString("CONTENT"), rs.getString("AUTHOR"),
+                new Post(rs.getLong("BOARD_NO"), rs.getLong("AUTHOR_NO"), rs.getString("TITLE"), rs.getString("CONTENT"),
                          rs.getTimestamp("DATE").toLocalDateTime());
         post.setNo(rs.getLong("NO"));
         post.setViews(rs.getLong("VIEWS"));
@@ -27,8 +27,12 @@ public class PostDao {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<Post> selectByBoard(String board) {
-        return jdbcTemplate.query("select * from POST where BOARD = ?", postMapper, board);
+    public List<Post> selectByBoard(Long boardNo) {
+        return jdbcTemplate.query("select * from POST where BOARD_NO = ?", postMapper, boardNo);
+    }
+
+    public List<Post> selectByAuthor(Long authorNo) {
+        return jdbcTemplate.query("select * from POST where AUTHOR_NO = ?", postMapper, authorNo);
     }
 
     public List<Post> selectByTitle(String title) {
@@ -44,19 +48,15 @@ public class PostDao {
                                   contains, contains);
     }
 
-    public List<Post> selectByAuthor(String author) {
-        return jdbcTemplate.query("select * from POST where AUTHOR = ?", postMapper, author);
-    }
-
     public void insert(Post post) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement(
-                    "insert into POST (BOARD, TITLE, CONTENT, AUTHOR, POSTDATE, VIEWS) values (?, ?, ?, ?, ?, ?)");
-            pstmt.setString(1, post.getBoard());
-            pstmt.setString(2, post.getTitle());
-            pstmt.setString(3, post.getContent());
-            pstmt.setString(4, post.getAuthor());
+                    "insert into POST (BOARD_NO, AUTHOR_NO, TITLE, CONTENT, POSTDATE, VIEWS) values (?, ?, ?, ?, ?, ?)");
+            pstmt.setLong(1, post.getBoardNo());
+            pstmt.setLong(2, post.getAuthorNo());
+            pstmt.setString(3, post.getTitle());
+            pstmt.setString(4, post.getContent());
             pstmt.setTimestamp(5, Timestamp.valueOf(post.getDate()));
             pstmt.setLong(6, post.getViews());
             return pstmt;
@@ -66,8 +66,8 @@ public class PostDao {
     }
 
     public void update(Post post) {
-        jdbcTemplate.update("update POST set BOARD = ?, TITLE = ?, CONTENT = ? where NO = ?",
-                            post.getBoard(), post.getTitle(), post.getContent(), post.getNo());
+        jdbcTemplate.update("update POST set BOARD_NO = ?, TITLE = ?, CONTENT = ? where NO = ?",
+                            post.getBoardNo(), post.getTitle(), post.getContent(), post.getNo());
     }
 
     public void increaseViews(Long no) {

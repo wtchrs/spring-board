@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 
 public class Post {
     private Long no;
-    private String board;
+    private Long boardNo;
+    private final Long authorNo;
     private String title;
     private String content;
-    private final String author;
     private final LocalDateTime date;
     private Long views;
 
-    public Post(String board, String title, String content, String author, LocalDateTime date) {
-        this.board = board;
+    public Post(Long boardNo, Long authorNo, String title, String content, LocalDateTime date) {
+        this.boardNo = boardNo;
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.authorNo = authorNo;
         this.date = date;
     }
 
@@ -27,12 +27,16 @@ public class Post {
         this.no = no;
     }
 
-    public String getBoard() {
-        return board;
+    public Long getBoardNo() {
+        return boardNo;
     }
 
-    public void setBoard(String board) {
-        this.board = board;
+    public void setBoardNo(Long boardNo) {
+        this.boardNo = boardNo;
+    }
+
+    public Long getAuthorNo() {
+        return authorNo;
     }
 
     public String getTitle() {
@@ -49,10 +53,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getAuthor() {
-        return author;
     }
 
     public LocalDateTime getDate() {
