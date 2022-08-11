@@ -1,9 +1,7 @@
 package org.example.config;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.example.dao.BoardDao;
-import org.example.dao.PostDao;
-import org.example.dao.UserDao;
+import org.example.dao.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,16 +25,16 @@ public class DaoConfig {
 
     @Bean
     public UserDao userDao() {
-        return new UserDao(dataSource());
+        return new DefaultUserDao(dataSource());
     }
 
     @Bean
     public BoardDao boardDao() {
-        return new BoardDao(dataSource());
+        return new DefaultBoardDao(dataSource());
     }
 
     @Bean
     public PostDao postDao() {
-        return new PostDao(dataSource());
+        return new DefaultPostDao(dataSource());
     }
 }

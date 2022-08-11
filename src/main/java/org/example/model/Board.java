@@ -6,7 +6,7 @@ public class Board {
 
     private Long no;
     private String title;
-    private LocalDateTime openDate;
+    private final LocalDateTime openDate;
 
     public Board(String title, LocalDateTime openDate) {
         this.title = title;

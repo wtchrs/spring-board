@@ -3,9 +3,7 @@ package org.example.config;
 import org.example.dao.BoardDao;
 import org.example.dao.PostDao;
 import org.example.dao.UserDao;
-import org.example.service.AuthService;
-import org.example.service.PasswordChangeService;
-import org.example.service.UserRegisterService;
+import org.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,5 +43,15 @@ public class ServiceConfig {
     @Bean
     public AuthService authService() {
         return new AuthService(userDao);
+    }
+
+    @Bean
+    public BoardService boardService() {
+        return new BoardService(boardDao, postDao);
+    }
+
+    @Bean
+    public PostService postService() {
+        return new PostService(userDao);
     }
 }

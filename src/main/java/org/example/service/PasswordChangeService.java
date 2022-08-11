@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.dao.UserDao;
 import org.example.exception.UserNotFoundException;
-import org.example.exception.WrongIdPasswordException;
 import org.example.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
